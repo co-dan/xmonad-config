@@ -5,17 +5,21 @@ import XMonad.Util.Run(spawnPipe)
 import XMonad.Util.Scratchpad
 import XMonad.Util.EZConfig(additionalKeys)
 import XMonad.StackSet (RationalRect(..))
+import XMonad.Prompt
+import XMonad.Prompt.Shell
 import System.IO
 
 startup = do
-  spawn "/home/dan/.xmonadrc/remap.sh"
+  spawn "/home/d/.xmonad/remap.sh"
+  spawn "/home/d/.xmonad/startup.sh"
   
 main = do
-  xmproc <- spawnPipe "xmobar /home/dan/.xmobarrc" 
+  xmproc <- spawnPipe "xmobar /home/d/.xmobarrc" 
   xmonad $ defaultConfig
-            { manageHook = (manageDocks <+> manageHook defaultConfig) <+> manageScratchPad
+            { manageHook = manageDocks <+> manageHook defaultConfig
+                       	 <+> composeAll myManagementHooks
             , startupHook = startup
-            , layoutHook = avoidStruts  $  layoutHook defaultConfig
+            , layoutHook = myLayoutHook
             , modMask = mod4Mask
             , logHook =  dynamicLogWithPP xmobarPP
                               { ppOutput = hPutStrLn xmproc
@@ -23,13 +27,33 @@ main = do
             } `additionalKeys`
             [ ((0, xK_Print), spawn "scrot")
             , ((controlMask, xK_Print), spawn "sleep 0.2; scrot -s")
-            , ((mod4Mask .|. shiftMask, xK_r), scratchpadSpawnActionTerminal "x-terminal-emulator")
+	    , ((shiftMask .|. mod4Mask, xK_r), shellPrompt myXPConfig)
             ]
 
-manageScratchPad :: ManageHook
-manageScratchPad = scratchpadManageHook (RationalRect l t w h)
+
+myNormalBorderColor = "#333"
+myFocusedBorderColor = "#fedb73"
+
+myManagementHooks = [
+  resource =? "stalonetray" --> doIgnore
+  -- , (className =? "Empathy") --> 
+  ]
+
+myXPConfig = defaultXPConfig { font = "xft:Ubuntu Mono-12"
+                 , bgColor           = myNormalBorderColor
+                 , fgColor           = myFocusedBorderColor
+                 , fgHLight          = "#000000"
+                 , bgHLight          = "#BBBBBB"
+                 , borderColor       = myFocusedBorderColor
+                 , promptBorderWidth = 1
+                 , position          = Bottom
+                 , height            = 14
+                 , historySize       = 256
+                 }
+
+myLayoutHook = avoidStruts (Full ||| tiled ||| Mirror tiled)
   where
-    h = 0.1     -- terminal height, 10%
-    w = 1       -- terminal width, 100%
-    t = 1 - h   -- distance from top edge, 90%
-    l = 1 - w   -- distance from left edge, 0%
+     tiled   = Tall nmaster delta ratio
+     nmaster = 1
+     ratio   = 1/2
+     delta   = 3/100
