@@ -20,9 +20,14 @@ main = do
                        	 <+> composeAll myManagementHooks
             , startupHook = startup
             , layoutHook = myLayoutHook
+            , workspaces = ["α","β","γ","δ","ε","ζ","η","θ"]
+            , focusedBorderColor = myFgColor
+            , normalBorderColor = myFocusedBorderColor
             , modMask = mod4Mask
             , logHook =  dynamicLogWithPP xmobarPP
                               { ppOutput = hPutStrLn xmproc
+                              , ppSep = " :: "
+                              , ppCurrent = xmobarColor "#f0c674" "" . wrap "[" "]"
                               , ppTitle = xmobarColor "white" "" . shorten 90 }
             } `additionalKeys`
             [ ((0, xK_Print), spawn "scrot")
@@ -31,8 +36,10 @@ main = do
             ]
 
 
-myNormalBorderColor = "#333"
-myFocusedBorderColor = "#fedb73"
+myNormalBorderColor = "#282a2e"
+myFocusedBorderColor = "#373b41"
+myFgColor = "#c5c8c6"
+myBgColor = "#1d1f21" 
 
 myManagementHooks = [
   resource =? "stalonetray" --> doIgnore
@@ -40,14 +47,14 @@ myManagementHooks = [
   ]
 
 myXPConfig = defaultXPConfig { font = "xft:Ubuntu Mono-12"
-                 , bgColor           = myNormalBorderColor
-                 , fgColor           = myFocusedBorderColor
-                 , fgHLight          = "#000000"
-                 , bgHLight          = "#BBBBBB"
-                 , borderColor       = myFocusedBorderColor
+                 , bgColor           = myBgColor
+                 , fgColor           = myFgColor
+                 , fgHLight          = myFgColor
+                 , bgHLight          = myFocusedBorderColor
+                 , borderColor       = myNormalBorderColor
                  , promptBorderWidth = 1
                  , position          = Bottom
-                 , height            = 14
+                 , height            = 20
                  , historySize       = 256
                  }
 

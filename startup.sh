@@ -6,7 +6,7 @@ if [ -z "$(pgrep stalonetray)" ] ; then
 	--icon-gravity E \
 	--geometry 4x1-0+0 \
 	--max-geometry 4x1-0+0 \
-	--background '#333' \
+	--background '#1d1f21' \
 	--skip-taskbar \
 	--icon-size 21 \
 	--kludges force_icons_size \
