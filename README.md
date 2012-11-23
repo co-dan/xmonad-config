@@ -2,4 +2,4 @@
 
 Made for use with [tomorrow night theme](https://github.com/chriskempson/tomorrow-theme)
 
-![Screenshot](http://zag.zig.io/xmonad_screenshot.png)
+![Screenshot](http://i.imgur.com/kGH87.png)
