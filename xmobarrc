@@ -1,15 +1,16 @@
 Config { font = "xft:Ubuntu Mono-12"
-       , bgColor = "#1d1f21"
-       , fgColor = "#c5c8c6"
+       , lowerOnStart = True
+       , bgColor = "#002b36"
+       , fgColor = "#93a1a1"
        , position = TopW L 92
-       , commands = [ Run Cpu ["-L","25","-H","70","--low","green","--high","red"] 10
+       , commands = [ Run Cpu ["-L","25","-H","70","--low","#859900","--high","#dc322f"] 10
                     -- , Run Memory ["-t","Mem: <usedratio>%"] 10
                     , Run BatteryP ["BAT0"] 
-                      ["-l","red","-h","green","-t","Batt: <left>% / <timeleft>"] 100
+                      ["-l","#dc322f","-h","#859900","-t","Batt: <left>% / <timeleft>"] 100
                     , Run Date "%a %b %_d %H:%M" "date" 10
                     , Run StdinReader
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%StdinReader% }{ %cpu% :: %battery% :: <fc=#f0c674>%date%</fc> :: "
+       , template = "%StdinReader% }{ %cpu% :: %battery% :: <fc=#b58900>%date%</fc> :: "
        }

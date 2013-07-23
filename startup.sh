@@ -6,7 +6,7 @@ if [ -z "$(pgrep stalonetray)" ] ; then
 	--icon-gravity E \
 	--geometry 4x1-0+0 \
 	--max-geometry 4x1-0+0 \
-	--background '#1d1f21' \
+	--background '#002b36' \
 	--skip-taskbar \
 	--icon-size 21 \
 	--kludges force_icons_size \
@@ -30,3 +30,4 @@ if [ "$?" = "0" ] ; then
     dropbox start
 fi
 
+eval $(cat ~/.fehbg)
